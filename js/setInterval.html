@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>counting.html</title>
+    <script type="text/javascript">
+    var counter = 0;
+    var output;
+    
+    function init(){
+        output = document.getElementById("output");
+        setInterval(count, 100);
+    }
+    
+    function count(){
+        counter++;
+        output.innerHTML = counter;
+    }
+    </script>
+</head>
+<body onload = "init()">
+    <h1>Counting with setInterval</h1>
+    <div id = "output">
+        nothing here yet
+    </div>
+</body>
+</html>

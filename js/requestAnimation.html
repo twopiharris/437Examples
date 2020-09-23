@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>counting.html</title>
+    <script type="text/javascript">
+    var counter = 0;
+    var output;
+    
+    function init(){
+        output = document.getElementById("output");
+        //setInterval(count, 100);
+        // note timing is no longer explicit
+        requestAnimationFrame(count);
+    }
+    
+    function count(){
+        counter++;
+        output.innerHTML = counter;
+        // call the function again, but not really a recursion
+        
+        requestAnimationFrame(count);
+    }
+
+    </script>
+</head>
+<body onload = "init()">
+    <h1>Counting with requestAnimationFrame</h1>
+    <div id = "output">
+        nothing here yet
+    </div>
+</body>
+</html>

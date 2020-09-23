@@ -1,0 +1,54 @@
+
+<!DOCTYPE HTML>
+<html lang = "en">
+<head>
+  <title>transform.html</title>
+  <meta charset = "UTF-8" />
+  <style type = "text/css">
+    .hidden{
+      display: none;
+    }
+  </style>
+  <script type = "text/javascript">
+  //<![CDATA[
+  
+  function draw(){
+    var drawing = document.getElementById("drawing");
+    var con = drawing.getContext("2d");
+    var goofyPic = document.getElementById("goofyPic");
+    
+    con.save();    
+    con.translate(100, 100);
+    con.rotate(Math.PI / 4);
+    con.scale(3.0, 1.5);
+    con.drawImage(goofyPic, -25, -25, 50, 50);
+    con.restore();
+
+    //draw a rectangle using the ordinary coordinate system
+    con.strokeStyle = "red";
+    con.lineWidth = 5;
+    con.strokeRect(0, 0, 200, 200);
+
+  } // end draw    
+  //]]>
+
+  </script>
+</head>
+
+<body onload = "draw()">
+  <h1>Transformations</h1>
+
+  <img class = "hidden"
+       id = "goofyPic"
+       src = "andyGoofy.gif"
+       alt = "Goofy pic of me" />
+
+  <canvas id = "drawing"
+          height = "200"
+          width = "200">
+    <p>Canvas not supported</p>
+  </canvas>
+
+</body>
+</html>
+

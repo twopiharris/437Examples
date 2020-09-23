@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang = "en-us">
+  <head>
+    <meta charset = "utf-8">
+    <title>Simple Sockets Documentation</title>
+    <body>
+    <h1>Simple Sockets</h1>
+
+    <h2>Overview</h2>
+    <p>
+    Simple Sockets is a simplified multiplayer game system using
+    websockets and node.js. It can be used for any HTML5 application
+    on modern browsers that support the websockets standard, and 
+    any server that can run node.js.
+    </p>
+
+    <p>
+    The library is general enough to be used in any application, but
+    it is specifically geared for use with the simpleGame.js game
+    engine.  The library features methods that make it very easy to 
+    share sprite data between simpleGame implementations.
+    </p>
+
+    <p>
+    The simpleSockets library was written by Andy Harris, and is
+    released under GPL in 2015.
+    </p>
+
+    <p>
+    The library has two main components:
+    </p>
+    
+    <ul>
+      <li><strong>gameserver.js</strong> is a websockets server. The server
+          needs to be running before any clients are connected, and 
+          manages all cross-client communication.  You generally will
+          not need to make any changes to the server</li>
+      <li><strong>gameClient.js</strong> is a javascript library file
+          meant to be included in your clients with the script tag. It
+          contains the GameClient object which vastly simplifies 
+          communication to the server (and thus the other clients.) It
+          also contains a couple of utility functions and variables.</li>  
+    </ul>
+
+    <h2>Introducing gameserver.js</h2>
+
+    <p>
+    This system begins with gameserver.js.  This is a 
+    simple mechanism to pass information among multiple players
+    (as many as you want.)  The gameserver.js is a bare-bones 
+    webSocket server.  
+    </p>
+
+    <p>
+    gameserver.js requires node.js and nodejs-websocket.  Use npm to 
+    install nodejs-websocket if it is not currently in your build.
+    Be sure to change the URL to the server where your game server is
+    located.  Of course you'll need to run gameserver.js through node
+    before communication will work.
+    </p>
+
+    <h2>Using gameClient.js</h2>
+    <p>
+    In addition to the server, there is a simple object called
+    GameClient included in the gameClient.js.  Instantiate this object
+    (for sake of documentation I'll call the instance gc) when the page
+    loads.  The constructor will require the URL of the running 
+    js file (for example: 
+    <code>ws.http://localhost:8001/gameserver.js</code>).
+    </p>
+
+    <p>
+    The GameClient class has the following methods:
+    <ul>
+      <li><strong>GameClient(url)</strong>
+          constructor. Takes the url of a running gameserver.</li>
+      <li><strong>connect()</strong>
+          connects this client to the server</li>
+      <li><strong>sendMessage(key, value)</strong>
+          sends state data of this client to the server.
+          key is an identifier for this client, and value
+          is any string value (can be CSV or JSON string)</li>
+      <li><strong>close()</strong>
+          closes the connection to the server.  Connection can be 
+          re-opened with another connect() call</li>
+      <li><strong>getState(message, searchKey)</strong>
+          Utility function for finding the state string associated
+	  with a client key. Returns state string associated with
+	  the key or an error message.</li>
+      <li><strong>getKeys(message)</strong>
+          Utility that returns all client keys associated with 
+	  the message. Returns an array of strings.</li>
+      <li><strong>sendSprite(key, sprite)</strong>
+          Sends a message to the server containing the image, 
+          x, y, width, height, and imageAngle of the sprite. 
+          This feature expects you to be using a simpleGame 
+          sprite object.</strong>
+      <li><strong>updateRemoteSprite(key, sprite)</strong>
+          given a key and a local sprite, updates the sprite
+          based on values sent to the server through the 
+          sendSprite() method.</li>
+    </ul>
+
+    <h2>Required Functions in the Client HTML</h2>
+    <ul>
+      <li><strong>init()</strong>
+          Does not need to be called init, but some sort of initialization
+	  needs to instantiate the GameClient class and connect to the
+	  server.</li>
+      <li><strong>getMessage(text)</strong>
+          Automatically called whenever any clients are updated
+	  text is the message string (also stored in stateData.)
+	  Use this function to respond to an update if you need 
+          anything more than lookups. The function is defined
+          (but empty) in gameClient.js, but it can be overwritten 
+          in your local file
+          to have some kind of action happen on every event.
+          This can be especially useful for reading custom messages.</li>
+    </ul>
+
+    <h2>About stateData</h2>
+    <p>
+    Every time a connected client updates, the getMessage() function
+    of each client is triggered, passing a message string as a 
+    parameter.  This message string consists of a multiline string,
+    one line per client.  The string begins with the client key 
+    followed by a pipe character and the rest of the character string
+    </p>
+
+    <p>
+    Including the gameClient.js file also provides access to the global
+    <code>stateData</code> string, which is automatically updated on 
+    every data
+    refresh. You can access this string directly if you wish (though
+    you should not change it directly.)  It is easier to use the 
+    convenience functions <code>getKeys()</code> to get an array of
+    client keys in the system, and the <code>getNode(key)</code> 
+    function to retrieve the data (normally position and state data)
+    associated with a particular key.
+    </p>
+
+    <p>
+    Of course if you're using simpleGame, it's even easier to use the 
+    specialized sprite methods to send the status of a local sprite to the
+    server and retrieve the status of remote sprites.
+    </p>
+
+    <p>
+    If you need more specialized control, you can always send a message
+    and have your client read the message to determine what it should 
+    do.
+    </p>
+
+    <h2>Files in this package</h2>
+    <p>
+    The following files are included in this release:
+    </p>
+    <ul>
+      <li><a href = "gameserver.js">gameserver.js</a>
+          The basic game server. Must be run via node.
+          <code>node gameserver.js</code> Node.js can be found at
+          <a href = "https://nodejs.org/en/">https://nodejs.org/en/</a>.
+          You will also need the nodejs-websocket library. If node is
+          installed, go to your working directory and use this
+          command to install the library: 
+          <code>npm install jodejs-websocket</code>. If you're running
+          Mac or Linux you may need sudo or admin access.</li>
+      <li><a href = "gameClient.js">gameClient.js</a>
+          Place this file in the same directory as your game files, and
+          include it in your client files much like including the 
+          simpleGame engine.  (It may be added to simpleGame in a later
+          version.)</li>
+      <li><a href = "gameClient.html">gameClient.html</a>
+          Use this page to test the system.  The game client page
+          includes the ability to add your own test data as well as 
+          buttons to manually connect, disconnect, and update. Run
+          two copies of this program in separate windows to see how
+          data is being passed.</li>
+      <li><a href = "player.html">player.html</a>
+          A simple demo of the library used with simpleGame.  Run this
+          page in your browser and control the player with the arrow keys.
+          </li>
+      <li><a href "remote.html">remote.html</a>
+          The companion to player.html. If player.html is in one window and
+          reflect.html is in another (and of course the server is running)
+          all the player's behavior is immediately reflected onto the 
+          reflect page.  Use these pages to see the general flow of
+          remote sprite updating.</li>
+      <li><a href = "simpleSockets.html">simpleSockets.html</a>
+          This documentation file.</li>
+    </ul>
+
+    <h2>Warning</h2>
+    <p>
+    Note there is absolutely no security in this system.  All data is
+    passed as trusted data, so it's up to you to make sure it does what
+    it's supposed to do. There is also no checking for dropped clients,
+    so a dropped client will simply freeze.  You may want to put some 
+    client-side code to check for this.
+    </p>
+
+    <p>
+    You may have to experiment with your firewall or OS settings to run
+    the clients on a remote machine.  All code is tested on localhost, 
+    but it may require some more experimentation to get things working
+    on a local network or beyond.
+    </p>
+
+
+  </body>
+</html>

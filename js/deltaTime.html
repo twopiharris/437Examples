@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>counting.html</title>
+    <script type="text/javascript">
+    var counter = 0;
+    var output;
+
+    // timeStamp contains current time
+    var date = new Date();
+    var timeStamp = date.getTime();
+    
+    function init(){
+        output = document.getElementById("output");
+        // note timing is no longer explicit
+        requestAnimationFrame(count);
+    }
+    
+    // requestAnimationFrame can pass a timeStamp parameter
+    function count(newTime){
+        // calculate a delta time
+        var deltaTime = newTime - timeStamp;
+        timeStamp = newTime;
+
+        counter++;
+        output.innerHTML = counter+ ") " + deltaTime;
+        // call the function again, but not really a recursion
+        
+        requestAnimationFrame(count);
+    }
+
+    </script>
+</head>
+<body onload = "init()">
+    <h1>Counting with requestAnimationFrame</h1>
+    <div id = "output">
+        nothing here yet
+    </div>
+</body>
+</html>

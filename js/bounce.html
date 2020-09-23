@@ -1,0 +1,85 @@
+
+
+<!DOCTYPE HTML>
+<html lang = "en">
+<head>
+  <title>bounce.html</title>
+  <meta charset = "UTF-8" />
+  <style type = "text/css">
+    .hidden{
+      display: none;
+    }
+    body {
+      background-color: #cccccc;
+    }
+  </style>
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  var x = 0;
+  var y = 100;
+  var dx = 10;
+  var dy = 7;
+  CANV_HEIGHT = 200;
+  CANV_WIDTH = 200;
+  SPR_HEIGHT = 50;
+  SPR_WIDTH = 50;
+
+  function init(){
+    setInterval(draw, 100);
+  }
+
+  function draw(){
+    var drawing = document.getElementById("drawing");
+    var con = drawing.getContext("2d");
+    var goofyPic = document.getElementById("goofyPic");
+    
+    x += dx;
+    y += dy;
+
+    con.fillStyle = "white";
+    //clear background
+    con.fillRect(0, 0, 200, 200);
+    con.drawImage(goofyPic, x, y, SPR_HEIGHT, SPR_WIDTH);
+
+    bounce();
+
+  } // end draw    
+  //]]>
+
+  function bounce(){
+    if (x > CANV_WIDTH - SPR_WIDTH){
+      dx *= -1;
+    }
+    if (x < 0){
+      dx *= -1;
+    } 
+    if (y > CANV_HEIGHT - SPR_HEIGHT){
+      dy *= -1;
+    } 
+    if (y < 0){
+      dy *= -1;
+    }
+
+  } // end bounce
+
+  </script>
+</head>
+
+<body onload = "init()">
+  <h1>Bounce</h1>
+
+  <img class = "hidden"
+       id = "goofyPic"
+       src = "andyGoofy.gif"
+       alt = "Goofy pic of me" />
+
+  <canvas id = "drawing"
+          height = "200"
+          width = "200">
+    <p>Canvas not supported</p>
+  </canvas>
+
+</body>
+</html>
+

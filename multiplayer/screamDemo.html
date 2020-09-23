@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html lang = "en-us">
+<head>
+  <title>scream client</title>
+  <script type = "text/javascript">
+  var output;
+  var websocket;
+
+  function init(){
+   output = document.getElementById("output");
+  } // end init
+
+  function connect(){
+    //open socket
+    if ("WebSocket" in window){
+      websocket = new WebSocket("ws://localhost:8001/screamserver.js/");
+
+      output.innerHTML = "connecting";
+
+      //attach event handlers
+      websocket.onopen = onOpen;
+      websocket.onclose = onClose;
+      websocket.onmessage = onMessage;
+      websocket.onerror = onError;
+    } else {
+      alert ("web sockets not supported on this browser");
+    } // end if
+
+  } // end connect
+
+  function onOpen(evt){
+    output.innerHTML = "<p>Connected to server</p>";
+  } // end onOpen
+
+  function onClose(evt){
+    output.innerHTML += "<p>DISCONNECTED</p>";
+  } // end onClose
+
+  function onMessage(evt){
+    output.innerHTML += "<p>Response: " + evt.data + "</p>";
+  } // end onMessage
+
+  function onError(evt){
+    output.innerHTML += "<p>ERROR: "+ evt.data + "</p>";
+  } // end onError
+
+  function sendMessage(){
+    txtInput = document.getElementById("txtInput");
+    message = txtInput.value;
+    websocket.send(message);
+    output.innerHTML += "<p>MESSAGE SENT:  " + message + "<p>";   
+  } // end sendMessage
+
+   
+  </script>
+</head>
+
+<body onload = "init()">
+<h1>Scream Client</h1>
+
+<form>
+  <fieldset>
+
+    <label>Input text</label>
+    <input type = "text"
+       id = "txtInput">
+    <br>
+    <div id = "output">
+      output will go here
+    </div>
+    <button type = "button"
+            onclick = "sendMessage()">
+      send request
+    </button>
+    <button type = "button"
+	    onclick = "connect()">
+      connect
+    </button>
+    <button type = "button"
+	    onclick = "websocket.close()">
+      disconnect
+    </button>
+
+  </fieldset>
+</form>
+</body>
+</html>
+
+
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html lang = "en">
+<head>
+  <title>wrap.html</title>
+  <meta charset = "UTF-8" />
+  <style type = "text/css">
+    .hidden{
+      display: none;
+    }
+  </style>
+  <script type = "text/javascript">
+  //<![CDATA[
+
+  var drawing;
+  var con;
+  var goofyPic;
+  CANV_HEIGHT = 200;
+  CANV_WIDTH = 200;
+  SPR_HEIGHT = 50;
+  SPR_WIDTH = 40;
+
+  var x = 0;
+  var y = 100;
+  var dx = 10;
+  var dy = 7;
+
+  function init(){
+    drawing = document.getElementById("drawing");
+    con = drawing.getContext("2d");
+    goofyPic = document.getElementById("goofyPic");
+    setInterval(draw, 100);
+  }
+
+  function draw(){
+    //clear background
+    con.clearRect(0, 0, 200, 200);
+
+    //move the element
+    x += dx;
+    y += dy;
+
+    //check for boundaries
+    wrap();
+
+    //draw the image
+    con.drawImage(goofyPic, x, y, SPR_WIDTH, SPR_HEIGHT);
+
+    //draw a rectangle
+    con.strokeStyle = "red";
+    con.lineWidth = 5;
+    con.strokeRect(0, 0, CANV_WIDTH, CANV_HEIGHT);
+
+  } // end draw    
+
+  function wrap(){
+    if (x > CANV_WIDTH){
+      x = 0;
+    }
+    if (x < 0){
+      x = CANV_WIDTH;
+    } 
+    if (y > CANV_HEIGHT){
+      y = 0;
+    } // end if
+    if (y < 0){
+      y = CANV_HEIGHT;
+    }
+  } // end wrap
+
+  //]]>
+
+  </script>
+</head>
+
+<body onload = "init()">
+  <h1>Wrap</h1>
+
+  <img class = "hidden"
+       id = "goofyPic"
+       src = "andyGoofy.gif"
+       alt = "Goofy pic of me" />
+
+  <canvas id = "drawing"
+          height = "200"
+          width = "200">
+    <p>Canvas not supported</p>
+  </canvas>
+</body>
+</html>
+
