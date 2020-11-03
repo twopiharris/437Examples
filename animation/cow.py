@@ -34,9 +34,9 @@ class Cow(pygame.sprite.Sprite):
         
         self.dir = EAST
         self.frame = 0
-        self.delay = 1
+        self.delay = 0
         self.pause = self.delay
-        self.speed = 3       
+        self.speed = 3     
 
         self.dxVals = (1,  .7,  0, -.7, -1, -.7, 0, .7)
         self.dyVals = (0, -.7, -1, -.7,  0,  .7, 1, .7)
