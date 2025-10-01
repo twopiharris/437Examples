@@ -6,9 +6,6 @@
 // https://www.npmjs.com/package/nodejs-websocket
 // uses nodejs-websocket
 
-// Andy Harris, 2015
-// released under GPL
-
 // will hold array of clients
 var clientData = {};
 
